@@ -10,22 +10,19 @@ import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
 
 
-/*
- * @author Paul Grigoras
- */
+public class MenuHandler implements ActionListener {
 
-public class MyHandler implements ActionListener {
-
-	JFileChooser fc;
+	private JFileChooser fc;
 	
-	MainFrame mainframe;
-	JTabbedPane jt;
-	String msg;
-	public MyHandler(MainFrame mainframe){
+	private MainFrame mainframe;
+	private JTabbedPane jt;
+	
+	public MenuHandler(MainFrame mainframe){
 		this.fc=mainframe.fc;
 		this.mainframe=mainframe;
 		jt=mainframe.jtb;
 	}
+	
 	public void actionPerformed(ActionEvent ae){
 		String arg=(String)ae.getActionCommand();
 		if (arg.equals("New tab")) {
@@ -44,7 +41,7 @@ public class MyHandler implements ActionListener {
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			if (file!=null){
 			try {
-				ImageIO.write(ap.jp.img, "png", file);
+				ImageIO.write(ap.getFunctionGrapher().img, "png", file);
 			} catch (IOException e){}}
 			file=null;
 			
@@ -67,7 +64,7 @@ public class MyHandler implements ActionListener {
 				ApplicationPanel ap=(ApplicationPanel)jt.getComponentAt(i);			
 				try {
 					File file=new File(name+" "+i+extension);
-					ImageIO.write(ap.jp.img, "png", file);
+					ImageIO.write(ap.getFunctionGrapher().img, "png", file);
 				} catch (IOException e){}}
 			
 			}

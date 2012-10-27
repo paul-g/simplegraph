@@ -1,27 +1,28 @@
 package ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
-import javax.swing.event.*;
-import javax.imageio.*;
-import java.io.*;
-
-/*
- * @author Paul Grigoras
- */
 
 public class ApplicationPanel extends JPanel implements TableModelListener{
 	
 	private static final long serialVersionUID = 1L;
 	
-	int OPTION_PANEL_MAX_HEIGHT=200;
-	int OPTION_PANEL_MIN_HEIGHT=50;
-	FunctionGrapher jp;
-	JTable tabel1;
-	MainFrame mainframe;
+	private static final int OPTION_PANEL_MAX_HEIGHT=200;
+	private static final int OPTION_PANEL_MIN_HEIGHT=50;
+	private FunctionGrapher functionGrapher;
+	private JTable tabel1;
+	private MainFrame mainframe;
+	
 	ApplicationPanel(String s,MainFrame mainframe){
 		this.mainframe=mainframe;
 		setLayout(new BorderLayout());
@@ -29,14 +30,14 @@ public class ApplicationPanel extends JPanel implements TableModelListener{
 		tabel1=new JTable(new SettingsTableModel());
 	
 		JScrollPane jsp=new JScrollPane(tabel1);
-		jp=new FunctionGrapher();
-		jp.mainframe=mainframe;
-		jp.appanel=this;
+		functionGrapher=new FunctionGrapher();
+		functionGrapher.mainframe=mainframe;
+		functionGrapher.appanel=this;
 	
-		jp.setMinimumSize(new Dimension(0,d.height-OPTION_PANEL_MAX_HEIGHT));
-		jp.setPreferredSize(new Dimension(0,d.height-OPTION_PANEL_MAX_HEIGHT));
+		functionGrapher.setMinimumSize(new Dimension(0,d.height-OPTION_PANEL_MAX_HEIGHT));
+		functionGrapher.setPreferredSize(new Dimension(0,d.height-OPTION_PANEL_MAX_HEIGHT));
 				
-		JSplitPane jsplit=new JSplitPane(JSplitPane.VERTICAL_SPLIT,jp,jsp);
+		JSplitPane jsplit=new JSplitPane(JSplitPane.VERTICAL_SPLIT,functionGrapher,jsp);
 		jsp.setMinimumSize(new Dimension(0,OPTION_PANEL_MIN_HEIGHT));
 		jsp.setPreferredSize(new Dimension(d.width,OPTION_PANEL_MIN_HEIGHT));
 		jsplit.setResizeWeight(1);
@@ -52,8 +53,6 @@ public class ApplicationPanel extends JPanel implements TableModelListener{
 		tabel1.getModel().addTableModelListener(this);
 	}
 
-	
-
 	public void tableChanged(TableModelEvent e){
 		TableModel model=(TableModel)e.getSource();
 		int row=(int)e.getFirstRow();
@@ -65,72 +64,21 @@ public class ApplicationPanel extends JPanel implements TableModelListener{
 					else infoTitle=info;
 					this.mainframe.jtb.setTitleAt(i,infoTitle);  
 					//this.jp.function_name=info;
-					this.jp.getFunctions(info);
+					this.functionGrapher.getFunctions(info);
 					}
-		else if(row==1) this.jp.getColours(info);
-		else if (row==2) {if (info.equals("true")) this.jp.displayGrid=true; else this.jp.displayGrid=false;}
-		else if (row==3) {if (info.equals("true") )this.jp.displayAxisValues=true; else this.jp.displayAxisValues=false;}
-		else if (row==4) {if (info.equals("true")) this.jp.showAsymp=true;else this.jp.showAsymp=false;}
-		else if (row==5) {int thick=Integer.parseInt(info); if (thick<=10) this.jp.thick=thick; else {this.jp.thick=10; tabel1.setValueAt("10",5,1);}}
-		else if (row==6) {if (info.equals("auto")) {this.jp.accuracy=1;this.jp.AutoAccuracy=true;} else {int acc=Integer.parseInt(info); if (acc<=4) this.jp.accuracy=acc; else {this.jp.accuracy=4;tabel1.setValueAt("4",6,1);}}}
-		else if (row==7) {if (info!=null) this.jp.increasedAcc=info; }
-		this.jp.repaint();
+		else if(row==1) this.functionGrapher.getColours(info);
+		else if (row==2) {if (info.equals("true")) this.functionGrapher.displayGrid=true; else this.functionGrapher.displayGrid=false;}
+		else if (row==3) {if (info.equals("true") )this.functionGrapher.displayAxisValues=true; else this.functionGrapher.displayAxisValues=false;}
+		else if (row==4) {if (info.equals("true")) this.functionGrapher.showAsymp=true;else this.functionGrapher.showAsymp=false;}
+		else if (row==5) {int thick=Integer.parseInt(info); if (thick<=10) this.functionGrapher.thick=thick; else {this.functionGrapher.thick=10; tabel1.setValueAt("10",5,1);}}
+		else if (row==6) {if (info.equals("auto")) {this.functionGrapher.accuracy=1;this.functionGrapher.AutoAccuracy=true;} else {int acc=Integer.parseInt(info); if (acc<=4) this.functionGrapher.accuracy=acc; else {this.functionGrapher.accuracy=4;tabel1.setValueAt("4",6,1);}}}
+		else if (row==7) {if (info!=null) this.functionGrapher.increasedAcc=info; }
+		this.functionGrapher.repaint();
 	}
-}
+	
 
-class PMyHandler implements ActionListener{
-	//final JFileChooser fc = new JFileChooser();
-	FunctionGrapher mjp;
-	Dimension d;
-	PMyHandler(FunctionGrapher mjp){
-		this.mjp=mjp;
+	public FunctionGrapher getFunctionGrapher() {
+		return functionGrapher;
 	}
-	public void actionPerformed(ActionEvent ae){
-		String arg=(String)ae.getActionCommand();
-		if (arg.equals("Fullscreen")){
-			d=Toolkit.getDefaultToolkit().getScreenSize();
-			FunctionGrapher jp2=mjp.cloneGrapher();
-			JWindow jw=new JWindow();
-			jw.getContentPane().add(jp2);
-			jw.setSize(d.width,d.height);
-			jw.setAlwaysOnTop(true);
-			jp2.jwp=jw;
-			jp2.fullscreen.setText("Normal");
-			jw.setVisible(true);
-			jp2.popup.remove(jp2.closeTab);
-				
-		}else if (arg.equals("Normal")){
-			mjp.jwp.dispose();
-			mjp.jwp=null;
-			JMenuItem close=new JMenuItem("Close this tab");
-			mjp.popup.add(close);
-			close.addActionListener(new PMyHandler(mjp));
-		
-		}else if(arg.equals("Zoom in"))	{mjp.zoom+=mjp.zoom/2;mjp.repaint();}
-		else if(arg.equals("Zoom out"))	{mjp.zoom-=mjp.zoom/2;mjp.repaint();}
-		else if (arg.equals("Save")) { 	JFileChooser fc=mjp.mainframe.fc;
-										if (mjp.jwp!=null)mjp.jwp.setAlwaysOnTop(false);
-										if (mjp.jwp!=null)mjp.jwp.setAlwaysOnTop(true);
-										File file = fc.getSelectedFile();
-										fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-										if (file!=null){
-										try {
-												
-												ImageIO.write(mjp.img, "png", file);
-												} catch (IOException e){}}
-										file=null;
-										}
-										
-		else if(arg.equals("Close this tab")) {    
-			if (mjp.jwp!=null) {	mjp.mainframe.setVisible(true);
-									mjp.jwp.dispose();
-									mjp.jwp=null;
-								}
-			else{
-			JTabbedPane pane=mjp.mainframe.jtb;
-			int i = pane.indexOfComponent(mjp.appanel);
-			if (i != -1) pane.remove(i);
-			}
-		}
-	}
+
 }

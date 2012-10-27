@@ -57,7 +57,7 @@ public class MainFrame extends JFrame{
 		help=new JMenu("Help");
 		options=new JMenu("Options");
 		nou=new JMenuItem("New tab");
-		MyHandler handler=new MyHandler(this);
+		MenuHandler handler=new MenuHandler(this);
 		exit=new JMenuItem("Exit");
 		saveTab=new JMenuItem("Save selected tab");
 		saveAllTabs=new JMenuItem("Save all tabs");

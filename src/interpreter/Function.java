@@ -1,13 +1,16 @@
 package interpreter;
+
 import java.util.Stack;
 
-/*
- * @author Paul Grigoras
- */
+public class Function {
 
-public class Function implements FunctionConstants {
-	public boolean eroare = false;
-	public String textEroare;
+	private static final int[] left_asoc = { 1, 1, 1, 1, 0 };
+	private static final int[] right_asoc = { 1, 1, 1, 1, 0 };
+	private static final int prec[] = { 1, 1, 10, 10, 100 };
+	private static final String operatori = "+-*/^";
+	private static final String functions = "sin,sqrt,cos,arcsin,arctg,arccos,tg,tan,ln,floor,abs";
+
+	private boolean error = false;
 	public String law;
 
 	private Stack<String> output = new Stack<String>();
@@ -26,7 +29,7 @@ public class Function implements FunctionConstants {
 		String function_name;
 		int impins_nr = 0, impins_f = 0;
 
-		while (i < len && !eroare) {
+		while (i < len && !error) {
 			c = law.charAt(i);
 			if (Character.isDigit(c)) {
 				while (Character.isDigit(c) || (c == '.')) {
@@ -44,13 +47,12 @@ public class Function implements FunctionConstants {
 				nr = "";
 			} else if (operatori.indexOf(c) != -1) {
 				if (left_asoc[operatori.indexOf(c)] == 1) {
-					while (stiva.size() > 0 &&
-							stiva.peek().isEmpty()
+					while (stiva.size() > 0
+							&& stiva.peek().isEmpty()
 							&& operatori.indexOf(stiva.peek()) != -1
 							&& prec[operatori.indexOf(c)] <= prec[operatori
 									.indexOf(stiva.peek())])
-						output.push(stiva.pop())
-						;
+						output.push(stiva.pop());
 
 				} else if (right_asoc[operatori.indexOf(c)] == 1) {
 					while (stiva.peek().isEmpty()
@@ -73,12 +75,11 @@ public class Function implements FunctionConstants {
 					stiva.push("floor");
 				stiva.push("(");
 			} else if (c == ')' || c == ']') {
-				while (!stiva.peek().equals("(")
-						&& !stiva.peek().equals(""))
+				while (!stiva.peek().equals("(") && !stiva.peek().equals(""))
 					output.push(stiva.pop());
 				if (stiva.peek().isEmpty()) {
-					textEroare = "Paranteze gresite";
-					eroare = true;
+					// / TODO: add exception for wrong bracketing
+					error = true;
 				} else {
 					stiva.pop();
 					if (!stiva.peek().isEmpty()
@@ -96,7 +97,7 @@ public class Function implements FunctionConstants {
 					impins_nr = 0;
 				}
 			} else if (Character.isLetter(c)) {
-				function_name = ""; // partea de functii
+				function_name = ""; // handle functions
 				while (Character.isLetter(c)) {
 					function_name += c;
 					if (i + 1 < len && Character.isLetter(law.charAt(i + 1)))
@@ -124,16 +125,17 @@ public class Function implements FunctionConstants {
 			// stiva.display();
 			// output.display();
 		}
-		
+
 		while (stiva.size() > 0 && !stiva.peek().isEmpty()) {
 			if (stiva.peek().equals("(")) {
-				textEroare = "Paranteze gresite";
-				eroare = true;
+				// textEroare = "Paranteze gresite";
+				// TODO add exceptions for wrong bracketing
+				error = true;
 			} else
 				output.push(stiva.pop());
 		}
-		
-		if (eroare == true)
+
+		if (error == true)
 			output.clear();
 
 	}
@@ -141,22 +143,19 @@ public class Function implements FunctionConstants {
 	public double evaluate(double x) {
 		Stack<Double> stiva = new Stack<Double>();
 		int i = 0;
-		double val1 = 0, val2 = 0;
 		String el;
-		
+
 		while (i < output.size()) {
 			el = output.get(i);
 			if (!el.equals("") && Character.isDigit(el.charAt(0))) {
 				stiva.push(Double.parseDouble(el));
 			} else if (operatori.indexOf(el) != -1) {
-				val2 = stiva.pop();
-				val1 = stiva.pop();
-				double res = eval(val1, val2, el);
+				double res = SupportedOperators.evaluate(stiva.pop(), stiva.pop(), el);
 				stiva.push(res);
 			} else if (el.equals("x"))
 				stiva.push(x);
 			else {
-				stiva.push(handleFunctionSymbol(stiva, el));
+				stiva.push(SupportedFunctions.evaluate(el, stiva.pop()));
 			}
 			i++;
 		}
@@ -166,34 +165,6 @@ public class Function implements FunctionConstants {
 
 	}
 
-	private double eval(double val1, double val2, String el) {
-		double res = 0;
-		switch(el) {
-			case "+": res = val1 + val2; break;
-			case "-": res = val1 - val2; break;
-			case "*": res = val1 * val2; break;
-			case "/": res = val1 / val2; break;
-			case "^": res = Math.pow(val1, val2); break;
-		}
-		return res;
-	}
 
-	private Double handleFunctionSymbol(Stack<Double> stiva, String el) {
-		Double topOfStack = stiva.pop();
-		switch (el) {
-			case "sin": return Math.sin(topOfStack);
-			case "cos": return Math.cos(topOfStack);
-			case "tg" :
-			case "arccos": return Math.acos(topOfStack); 
-			case "arcsin": return Math.asin(topOfStack); 
-			case "arctg" : return Math.atan(topOfStack); 
-			case "tan":  return Math.tan(topOfStack); 
-			case "sqrt": return Math.sqrt(topOfStack); 
-			case "ln" :  return Math.log(topOfStack); 
-			case "abs"   : return Math.abs(topOfStack); 
-			case "floor" : return Math.floor(topOfStack);
-			default: return 0.0;
-		}
-	}
 
 }

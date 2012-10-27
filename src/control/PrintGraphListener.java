@@ -11,13 +11,9 @@ import java.awt.print.PrinterJob;
 
 import ui.FunctionGrapher;
 
-/*
- * @author Paul Grigoras
- */
-
 public class PrintGraphListener implements Printable, ActionListener {
 
-	FunctionGrapher mjp;
+	private FunctionGrapher mjp;
 
 	public PrintGraphListener(FunctionGrapher mjp) {
 		this.mjp = mjp;

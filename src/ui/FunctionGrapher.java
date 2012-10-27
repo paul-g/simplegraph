@@ -63,7 +63,7 @@ public class FunctionGrapher extends JPanel implements MouseMotionListener,
 		zoomOut=new JMenuItem("Zoom out");
 		save=new JMenuItem("Save");
 		closeTab=new JMenuItem("Close this tab");
-		PMyHandler pmh=new PMyHandler(this);
+		PopupMenuHandler pmh=new PopupMenuHandler(this);
 		fullscreen.addActionListener(pmh);
 		zoomIn.addActionListener(pmh);
 		zoomOut.addActionListener(pmh);
