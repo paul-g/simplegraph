@@ -46,7 +46,7 @@ public class SettingsTableModel extends AbstractTableModel {
 		fireTableCellUpdated(row, col);
 	}
 
-	public Class getColumnClass(int c) {
+	public Class<?> getColumnClass(int c) {
 		return getValueAt(0, c).getClass();
 	}
 }
