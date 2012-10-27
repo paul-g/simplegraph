@@ -1,10 +1,11 @@
+package ui;
 import javax.swing.table.AbstractTableModel;
 
 /*
  * @author Paul Grigoras
  */
 
-public class MyTableModel extends AbstractTableModel {
+public class SettingsTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 

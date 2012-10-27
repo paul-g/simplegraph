@@ -1,3 +1,7 @@
+package ui;
+
+import interpreter.Function;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +19,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JWindow;
+
+import control.PrintGraphListener;
+
 
 
 /*
@@ -62,7 +69,7 @@ public class FunctionGrapher extends JPanel implements MouseMotionListener,
 		zoomOut.addActionListener(pmh);
 		save.addActionListener(pmh);
 		closeTab.addActionListener(pmh);
-		print.addActionListener(new MyPrinter(this));
+		print.addActionListener(new PrintGraphListener(this));
 		popup.add(fullscreen);
 		popup.add(zoomIn);
 		popup.add(zoomOut);

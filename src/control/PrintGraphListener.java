@@ -1,3 +1,4 @@
+package control;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,15 +9,17 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
+import ui.FunctionGrapher;
+
 /*
  * @author Paul Grigoras
  */
 
-public class MyPrinter implements Printable, ActionListener {
+public class PrintGraphListener implements Printable, ActionListener {
 
 	FunctionGrapher mjp;
 
-	MyPrinter(FunctionGrapher mjp) {
+	public PrintGraphListener(FunctionGrapher mjp) {
 		this.mjp = mjp;
 	}
 

@@ -1,3 +1,5 @@
+package ui;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -24,7 +26,7 @@ public class ApplicationPanel extends JPanel implements TableModelListener{
 		this.mainframe=mainframe;
 		setLayout(new BorderLayout());
 		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-		tabel1=new JTable(new MyTableModel());
+		tabel1=new JTable(new SettingsTableModel());
 	
 		JScrollPane jsp=new JScrollPane(tabel1);
 		jp=new FunctionGrapher();
