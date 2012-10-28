@@ -1,6 +1,5 @@
-package ui;
+package org.paulg.simplegraph.ui;
 
-import interpreter.Function;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -20,13 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JWindow;
 
-import control.PrintGraphListener;
+import org.paulg.simplegraph.control.PrintGraphListener;
+import org.paulg.simplegraph.interpreter.Function;
 
-
-
-/*
- * @author Paul Grigoras
- */
 
 public class FunctionGrapher extends JPanel implements MouseMotionListener,
 		MouseListener, MouseWheelListener {

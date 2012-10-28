@@ -1,9 +1,5 @@
-package ui;
+package org.paulg.simplegraph.ui;
 import javax.swing.table.AbstractTableModel;
-
-/*
- * @author Paul Grigoras
- */
 
 public class SettingsTableModel extends AbstractTableModel {
 

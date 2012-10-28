@@ -1,4 +1,4 @@
-package control;
+package org.paulg.simplegraph.control;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,7 +9,8 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
-import ui.FunctionGrapher;
+import org.paulg.simplegraph.ui.FunctionGrapher;
+
 
 public class PrintGraphListener implements Printable, ActionListener {
 

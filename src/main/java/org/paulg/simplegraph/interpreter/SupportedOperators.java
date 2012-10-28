@@ -1,4 +1,4 @@
-package interpreter;
+package org.paulg.simplegraph.interpreter;
 
 public enum SupportedOperators {
 

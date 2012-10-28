@@ -1,4 +1,4 @@
-package ui;
+package org.paulg.simplegraph.ui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;

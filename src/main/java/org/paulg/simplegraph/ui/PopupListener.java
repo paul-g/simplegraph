@@ -1,4 +1,4 @@
-package ui;
+package org.paulg.simplegraph.ui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
