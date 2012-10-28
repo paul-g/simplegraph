@@ -14,14 +14,15 @@ public class Function {
 	public String law;
 
 	private Stack<String> output = new Stack<String>();
-	private Stack<String> stiva = new Stack<String>();
-
 	public Function(String s) {
 		law = s;
 		toRPN();
 	}
+	
+
 
 	private void toRPN() {
+		Stack<String> stiva = new Stack<String>();
 		int i = 0;
 		char c;
 		String nr = "";
@@ -82,7 +83,7 @@ public class Function {
 					error = true;
 				} else {
 					stiva.pop();
-					if (!stiva.peek().isEmpty()
+					if (!stiva.isEmpty() && !stiva.peek().isEmpty()
 							&& functions.indexOf(stiva.peek()) != -1) {
 						output.push(stiva.pop());
 						impins_f = 1;
@@ -160,11 +161,6 @@ public class Function {
 			i++;
 		}
 
-		// stiva.display();
 		return stiva.pop();
-
 	}
-
-
-
 }
