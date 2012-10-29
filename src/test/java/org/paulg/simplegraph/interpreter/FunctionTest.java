@@ -3,6 +3,7 @@ package org.paulg.simplegraph.interpreter;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 public class FunctionTest {
 
@@ -25,7 +26,8 @@ public class FunctionTest {
 		assertEquals(3 * (2 + x), f("3 * (2 + x)", x), EPSILON);
 		assertEquals(3 + (2 * x), f("3 + (2 * x)", x), EPSILON);
 	}
-	
+
+	@Ignore	
 	@Test
 	public void testOperatorBinding() {
 		double x = 2;
